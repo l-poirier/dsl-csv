@@ -10,7 +10,7 @@ Expression:
 	'{' expr+=Expression (';'expr+=Expression)* '}' |
 	var=ID '=' val=Expression |
 	logex=LogicalExpression |
-	"!"nope=Expression
+	'!'nope=Expression
 ;
 
 LogicalExpression:
@@ -18,7 +18,7 @@ LogicalExpression:
 ;
 
 CompExpression:
-	left=ArithExpression (op+=('<'|'>'|'='|"<="|">="|"!=") right+=CompExpression)*
+	left=ArithExpression (op+=('<'|'>'|'=='|'<='|'>='|'!=') right+=CompExpression)*
 ;
 
 ArithExpression:
@@ -53,80 +53,79 @@ FuncCall:
 	Dim |
 	Sort |
 	Count
-	 	
 ;
 
 Count:
-    "Count" '(' vector=Expression ')'
+    'Count' '(' vector=Expression ')'
 ;
 
 Sort:
-    "Sort" '(' file=Expression ',' criterion=Expression ')'
+    'Sort' '(' file=Expression ',' criterion=Expression ')'
 ;
 
 Dim:
-    "Dimensions" '(' expr=Expression ')'
+    'Dim' '(' expr=Expression ')'
 ;
 
 Print:
-    "Dimensions" '(' expr=Expression ')'
+    'Print' '(' expr=Expression ')'
 ;
 
 Features:
-    "Features" '(' file=Expression ')'
+    'Features' '(' file=Expression ')'
 ;
 
 Row:
-    "Row" '(' file=Expression ',' vector=Expression ')'
+    'Row' '(' file=Expression ',' vector=Expression ')'
 ;
 
 Column:
-    "Column" '(' file=Expression ',' vector=Expression ')'
+    'Column' '(' file=Expression ',' vector=Expression ')'
 ;
 
 Product:
-    "Product" '(' vector=Expression ')'
+    'Product' '(' vector=Expression ')'
 ;
 
 Sum:
-    "Sum" '(' vector=Expression ')'
+    'Sum' '(' vector=Expression ')'
 ;
 
 Mean:
-    "Mean" '(' vector=Expression ')'
+    'Mean' '(' vector=Expression ')'
 ;
 
 Filter:
-	"Filter" '(' file=Expression ',' cond=Expression ')'
+	'Filter' '(' file=Expression ',' cond=Expression ')'
 ;
 
 Unselect:
-	"Unselect" '(' file=Expression ',' features=Expression ')'
+	'Unselect' '(' file=Expression ',' features=Expression ')'
 ;
 
 Select:
-	"Select" '(' file=Expression ',' features=Expression ')'
+	'Select' '(' file=Expression ',' features=Expression ')'
 ;
 
 Save:
-	"Save" '(' filename=Expression ',' name=Expression ',' sep=Expression ',' saveHeader=Expression ',' saveID=Expression ')'
+	'Save' '(' filename=Expression ',' file=Expression ',' sep=Expression ',' saveHeader=Expression ',' saveID=Expression ')'
 ;
 
 Acquire:
-	"Acquire" '(' name=Expression ',' sep=Expression ',' hasHeader=Expression ')'
+	'Acquire' '(' path=Expression ',' sep=Expression ',' hasHeader=Expression ')'
 ;
-/*"Acquire" '(' ')'|
-	"Save" '(' ')' |
-	"Select" '(' ')''(' ')' |
-	"Unselect" '(' ')' |
-	"Filter" '(' ')' |
-	"Mean" '(' ')' |
-	"Sum" '(' ')' |
-	"Product" '(' ')' |
-	"Column" '(' ')' |
-	"Row" '(' ')' |
-	"Features" '(' ')' |
-	"Print" '(' ')' |
-	"Dim" '(' ')' |
-	"Sort" '(' ')' |
-	"Count" '(' ')' */
+/*'Acquire' '(' ')'|
+	'Save' '(' ')' |
+	'Select' '(' ')''(' ')' |
+	'Unselect' '(' ')' |
+	'Filter' '(' ')' |
+	'Mean' '(' ')' |
+	'Sum' '(' ')' |
+	'Product' '(' ')' |
+	'Column' '(' ')' |
+	'Row' '(' ')' |
+	'Features' '(' ')' |
+	'Print' '(' ')' |
+	'Dim' '(' ')' |
+	'Sort' '(' ')' |
+	'Count' '(' ')' */
