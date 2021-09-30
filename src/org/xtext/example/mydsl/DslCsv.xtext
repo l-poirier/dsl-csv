@@ -1,0 +1,132 @@
+grammar org.xtext.example.mydsl.DslCsv with org.eclipse.xtext.common.Terminals
+
+generate dslCsv "http://www.xtext.org/example/mydsl/DslCsv"
+
+Program:
+	(expr+=Expression)+;
+
+Expression:
+	call=FuncCall |
+	'{' expr+=Expression (';'expr+=Expression)* '}' |
+	var=ID '=' val=Expression |
+	logex=LogicalExpression |
+	"!"nope=Expression
+;
+
+LogicalExpression:
+	left=CompExpression (op+=('|'|'&') right+=LogicalExpression)*
+;
+
+CompExpression:
+	left=ArithExpression (op+=('<'|'>'|'='|"<="|">="|"!=") right+=CompExpression)*
+;
+
+ArithExpression:
+	left=SubExpression (op+=('*'|'/'|'%') right+=ArithExpression)*		
+;
+
+SubExpression:
+	left=BaseExpression (op+=('+'|'-') right+=SubExpression)*		
+;
+
+BaseExpression:
+	var=ID |
+	constNat=INT |
+	'"' constStr=STRING '"' |
+	'(' expr=Expression ')' |
+	'<' (constVector+=Expression)+ '>'
+;
+
+FuncCall:
+	Acquire |
+	Save |
+	Select |
+	Unselect |
+	Filter |
+	Mean |
+	Sum |
+	Product |
+	Column |
+	Row |
+	Features |
+	Print |
+	Dim |
+	Sort |
+	Count
+	 	
+;
+
+Count:
+    "Count" '(' vector=Expression ')'
+;
+
+Sort:
+    "Sort" '(' file=Expression ',' criterion=Expression ')'
+;
+
+Dim:
+    "Dimensions" '(' expr=Expression ')'
+;
+
+Print:
+    "Dimensions" '(' expr=Expression ')'
+;
+
+Features:
+    "Features" '(' file=Expression ')'
+;
+
+Row:
+    "Row" '(' file=Expression ',' vector=Expression ')'
+;
+
+Column:
+    "Column" '(' file=Expression ',' vector=Expression ')'
+;
+
+Product:
+    "Product" '(' vector=Expression ')'
+;
+
+Sum:
+    "Sum" '(' vector=Expression ')'
+;
+
+Mean:
+    "Mean" '(' vector=Expression ')'
+;
+
+Filter:
+	"Filter" '(' file=Expression ',' cond=Expression ')'
+;
+
+Unselect:
+	"Unselect" '(' file=Expression ',' features=Expression ')'
+;
+
+Select:
+	"Select" '(' file=Expression ',' features=Expression ')'
+;
+
+Save:
+	"Save" '(' filename=Expression ',' name=Expression ',' sep=Expression ',' saveHeader=Expression ',' saveID=Expression ')'
+;
+
+Acquire:
+	"Acquire" '(' name=Expression ',' sep=Expression ',' hasHeader=Expression ')'
+;
+/*"Acquire" '(' ')'|
+	"Save" '(' ')' |
+	"Select" '(' ')''(' ')' |
+	"Unselect" '(' ')' |
+	"Filter" '(' ')' |
+	"Mean" '(' ')' |
+	"Sum" '(' ')' |
+	"Product" '(' ')' |
+	"Column" '(' ')' |
+	"Row" '(' ')' |
+	"Features" '(' ')' |
+	"Print" '(' ')' |
+	"Dim" '(' ')' |
+	"Sort" '(' ')' |
+	"Count" '(' ')' */
