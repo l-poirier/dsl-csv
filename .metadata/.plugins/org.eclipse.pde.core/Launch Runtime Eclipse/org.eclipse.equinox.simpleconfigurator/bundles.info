@@ -15,6 +15,8 @@ com.sun.jna.platform,4.5.1.v20190425-1842,file:/usr/lib/eclipse-modeling/plugins
 com.sun.xml.bind,2.3.3.v20201118-1818,file:/usr/lib/eclipse-modeling/plugins/com.sun.xml.bind_2.3.3.v20201118-1818.jar,4,false
 com.sun.xml.bind,2.2.0.v20201118-1845,file:/usr/lib/eclipse-modeling/plugins/com.sun.xml.bind_2.2.0.v20201118-1845.jar,4,false
 fr.irisa.dslcsv,1.0.0.qualifier,file:/home/lugrim/eclipse-modeling-workspace/fr.irisa.dslcsv/,4,false
+fr.irisa.dslcsv.edit,1.0.0.qualifier,file:/home/lugrim/eclipse-modeling-workspace/fr.irisa.dslcsv.edit/,4,false
+fr.irisa.dslcsv.editor,1.0.0.qualifier,file:/home/lugrim/eclipse-modeling-workspace/fr.irisa.dslcsv.editor/,4,false
 fr.irisa.dslcsv.ide,1.0.0.qualifier,file:/home/lugrim/eclipse-modeling-workspace/fr.irisa.dslcsv.ide/,4,false
 fr.irisa.dslcsv.tests,1.0.0.qualifier,file:/home/lugrim/eclipse-modeling-workspace/fr.irisa.dslcsv.tests/,4,false
 fr.irisa.dslcsv.ui,1.0.0.qualifier,file:/home/lugrim/eclipse-modeling-workspace/fr.irisa.dslcsv.ui/,4,false

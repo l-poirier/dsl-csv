@@ -8260,3 +8260,6 @@ Binding(SHIFT+CR,
 		,,true),null),
 	org.eclipse.ui.defaultAcceleratorConfiguration,
 	org.eclipse.xtext.ui.embeddedTextEditorScope,,,system)
+
+!ENTRY unknown 4 0 2021-11-20 21:32:57.954
+!MESSAGE Execution of 'dbus-send --print-reply --dest=org.freedesktop.FileManager1 /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:"file:/home/lugrim/eclipse-modeling-workspace/fr.irisa.dslcsv/xtend-gen/fr/irisa/generator/ASTtoBash.java" string:""' failed with return code: 1
