@@ -38,10 +38,10 @@ Le typage faible a amené à de nombreux problèmes de typage difficilement solu
     * `Acquire` chargement d'un fichier en mémoire avec un séparateur donné et un booléen (y a-t-il une colonne d'identifiants ?)
     * `Save` (partiel) enregistre un fichier paramètres :
         * Nom de fichier
-	* Fichier à enregisrer
-	* Séparateur
-	* Doit-on enregistrer les en-têtes ? (non implémenté)
-	* Doit-on enregistrer la colonne id si elle existe ? (non implémenté)
+        * Fichier à enregisrer
+        * Séparateur
+        * Doit-on enregistrer les en-têtes ? (non implémenté)
+        * Doit-on enregistrer la colonne id si elle existe ? (non implémenté)
     * `Select` sélectionne certaines colonnes d'un fichier (ne fonctionne pas correctement)
     * `Print` affiche en console un élément (les fichiers sont affichés avec des tabulations et retours à la ligne)
 
