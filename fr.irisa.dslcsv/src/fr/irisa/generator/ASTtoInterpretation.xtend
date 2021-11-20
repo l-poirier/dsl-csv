@@ -2,6 +2,7 @@ package fr.irisa.generator
 
 import com.opencsv.CSVParserBuilder
 import com.opencsv.CSVReaderBuilder
+import com.opencsv.CSVWriterBuilder
 import fr.irisa.dslCsv.Acquire
 import fr.irisa.dslCsv.ArithExpression
 import fr.irisa.dslCsv.Assign
@@ -31,6 +32,11 @@ import fr.irisa.dslCsv.Var
 import fr.irisa.model.File
 import fr.irisa.model.Vector
 import java.io.FileReader
+import java.io.FileWriter
+import java.io.PrintWriter
+import java.io.StringWriter
+import java.util.ArrayList
+import java.util.Arrays
 import java.util.HashMap
 import java.util.List
 import java.util.Map
@@ -61,33 +67,58 @@ class ASTtoInterpretation {
 		val fileReader = new FileReader((eval(e.path, c) as String))
 		val csvParser = (new CSVParserBuilder()).withSeparator((eval(e.sep, c) as String).charAt(0)).build()
 		val csvReader = (new CSVReaderBuilder(fileReader)).withCSVParser(csvParser).build()
-		csvReader.toList
+		new File(csvReader.toList)
 	}
 
 	def static dispatch Object eval(Save e, InterpretationContext c) {
+		val fileWriter = new FileWriter((eval(e.filename, c) as String))
+		val csvWriter = (new CSVWriterBuilder(fileWriter)).withSeparator((eval(e.sep, c) as String).charAt(0)).build()
+		val file = eval(e.file, c)
+		if(! (file instanceof File)) {
+			c.stderr += "[ERROR] SAVING NON FILE OBJECT\n"
+			throw new RuntimeException()	
+		}
+		for(String[] sl : (file as File).content) {
+			csvWriter.writeNext(sl)
+		}
 		""
 	}
 
 	def static dispatch Object eval(Select e, InterpretationContext c) {
-		val vf = eval(e.file, c)
-		val vv = eval(e.features, c)
 		try {
-			if (vf instanceof List && vv instanceof List) {
-				val l = (vf as List<String[]>)
-				val f = (vv as List<String>)
-				IntStream.range(0, l.get(0).length).filter[i | f.contains(l.get(0).get(i))].toArray.toList
+			val vf = (eval(e.file, c) as File).content
+			var feat = eval(e.features, c)
+			if(feat instanceof Vector) {
+				feat = (feat as Vector).content				
+			} else if(feat instanceof String) {
+				feat = new ArrayList<String>(Arrays.asList((feat as String)))
+			} else if (feat instanceof Integer) {
+				feat = new ArrayList<String>(Arrays.asList((feat as Integer).toString))
+			}
+			
+			val vv = (feat as List<String>)
+
+			if(vv.stream().allMatch[matches('\\d+')]) {
+				val il = vv.stream().map[i | Integer.parseInt(i)].toList()
+				
+				new File(vf.map[sl |
+					IntStream.range(0, vf.get(0).length)
+					.filter[i | il.contains(i)]
+					.mapToObj[i | sl.get(i)].toArray as String[]])
 			} else {
-				c.stderr += vf.toString + "\n"
-				c.stderr += vv.toString + "\n"
-				c.stderr += "[ERROR] SELECTING WITH NON LIST OBJECT(S)\n"
+				new File(vf.map[sl |
+					IntStream.range(0, vf.get(0).length)
+					.filter[i | vv.contains(vf.get(0).get(i))]
+					.mapToObj[i | sl.get(i)].toArray as String[]])
 			}
 		} catch (ClassCastException exc) {
-				c.stderr += vf.toString + "\n"
-				c.stderr += vv.toString + "\n"
-			c.stderr += "[ERROR] SELECTING WITH NON FILE OBJECT\n"
-			eval(e.file, c)
+			c.stderr += "[ERROR] SELECTING WITH WRONG OBJECT TYPES\n"
+			val sw = new StringWriter()
+			val pw = new PrintWriter(sw)
+			exc.printStackTrace(pw)
+			c.stderr += sw.toString + '\n'
+			''
 		}
-
 	}
 
 	def static dispatch Object eval(Unselect e, InterpretationContext c) {
@@ -119,25 +150,23 @@ class ASTtoInterpretation {
 	}
 
 	def static dispatch Object eval(Print e, InterpretationContext c) {
-//		c.stdout += eval(e.expr, c) + "\n"
-//		return ""
+		val preout = eval(e.expr, c)
+		var out = ""
 		
-		var out = eval(e.expr, c)
-//		if (out instanceof List) {
-//			val ol = (out as List<Object>)
-//			if (ol.length > 0) {
-//				if (ol.get(0) instanceof String[]) {
-//					val l2d = (out as List<String[]>)
-//					out = l2d.fold("[FILE]", [s, x|s + '\n' + x.fold("", [ss, y|ss + '\t' + y])])
-//				} else
-//					out = ol.fold("[VECTOR] ", [s, x|s + '\t' + x.toString])
-//			}
-//		}
-		c.stdout += out + "\n"
+		if(preout instanceof File) {
+			for(String[] sl: (preout as File).content) {
+				for(String s: sl) {
+					out += s + '\t'
+				}
+			}
+		} else {
+			out = preout.toString + "\n"
+		}
+
+		c.stdout += out
 	}
 
 	def static dispatch Object eval(Dim e, InterpretationContext c) {
-
 		new Vector()
 	}
 
@@ -170,6 +199,8 @@ class ASTtoInterpretation {
 									(l as int).bitwiseOr((r as int))
 								case '&':
 									(l as int).bitwiseAnd((r as int))
+								default:
+									throw new RuntimeException('Unknown operator ' + e.op)
 							}
 						default:
 							throw new TypeException(javaToType(l), javaToType(r))
@@ -354,11 +385,11 @@ class ASTtoInterpretation {
 	}
 
 	def static dispatch Object eval(ConstVector e, InterpretationContext c) {
-		e.constVector
+		e.constVector.map[eval(it, c)]
 	}
 
 	def static dispatch Object eval(EList<Expression> e, InterpretationContext c) {
-		e.forEach[x|eval(x, c)]
+		e.forEach[eval(it, c)]
 		c
 	}
 }

@@ -5,6 +5,8 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVWriterBuilder;
+import com.opencsv.ICSVWriter;
 import fr.irisa.dslCsv.Acquire;
 import fr.irisa.dslCsv.ArithExpression;
 import fr.irisa.dslCsv.Assign;
@@ -34,15 +36,23 @@ import fr.irisa.dslCsv.Var;
 import fr.irisa.model.File;
 import fr.irisa.model.Vector;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.IntPredicate;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.ListExtensions;
 
 @SuppressWarnings("all")
 public class ASTtoInterpretation {
@@ -73,14 +83,15 @@ public class ASTtoInterpretation {
   
   protected static Object _eval(final Acquire e, final InterpretationContext c) {
     try {
-      List<String[]> _xblockexpression = null;
+      File _xblockexpression = null;
       {
         Object _eval = ASTtoInterpretation.eval(e.getPath(), c);
         final FileReader fileReader = new FileReader(((String) _eval));
         Object _eval_1 = ASTtoInterpretation.eval(e.getSep(), c);
         final CSVParser csvParser = new CSVParserBuilder().withSeparator(((String) _eval_1).charAt(0)).build();
         final CSVReader csvReader = new CSVReaderBuilder(fileReader).withCSVParser(csvParser).build();
-        _xblockexpression = IterableExtensions.<String[]>toList(csvReader);
+        List<String[]> _list = IterableExtensions.<String[]>toList(csvReader);
+        _xblockexpression = new File(_list);
       }
       return _xblockexpression;
     } catch (Throwable _e) {
@@ -89,69 +100,119 @@ public class ASTtoInterpretation {
   }
   
   protected static Object _eval(final Save e, final InterpretationContext c) {
-    return "";
+    try {
+      String _xblockexpression = null;
+      {
+        Object _eval = ASTtoInterpretation.eval(e.getFilename(), c);
+        final FileWriter fileWriter = new FileWriter(((String) _eval));
+        Object _eval_1 = ASTtoInterpretation.eval(e.getSep(), c);
+        final ICSVWriter csvWriter = new CSVWriterBuilder(fileWriter).withSeparator(((String) _eval_1).charAt(0)).build();
+        final Object file = ASTtoInterpretation.eval(e.getFile(), c);
+        if ((!(file instanceof File))) {
+          String _stderr = c.stderr;
+          c.stderr = (_stderr + "[ERROR] SAVING NON FILE OBJECT\n");
+          throw new RuntimeException();
+        }
+        for (final String[] sl : ((File) file).content) {
+          csvWriter.writeNext(sl);
+        }
+        _xblockexpression = "";
+      }
+      return _xblockexpression;
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
   }
   
   protected static Object _eval(final Select e, final InterpretationContext c) {
-    Object _xblockexpression = null;
-    {
-      final Object vf = ASTtoInterpretation.eval(e.getFile(), c);
-      final Object vv = ASTtoInterpretation.eval(e.getFeatures(), c);
-      Object _xtrycatchfinallyexpression = null;
-      try {
-        Object _xifexpression = null;
-        if (((vf instanceof List) && (vv instanceof List))) {
-          List<Integer> _xblockexpression_1 = null;
+    Object _xtrycatchfinallyexpression = null;
+    try {
+      File _xblockexpression = null;
+      {
+        Object _eval = ASTtoInterpretation.eval(e.getFile(), c);
+        final List<String[]> vf = ((File) _eval).content;
+        Object feat = ASTtoInterpretation.eval(e.getFeatures(), c);
+        if ((feat instanceof Vector)) {
+          feat = ((Vector) feat).content;
+        } else {
+          if ((feat instanceof String)) {
+            List<String> _asList = Arrays.<String>asList(((String) feat));
+            ArrayList<String> _arrayList = new ArrayList<String>(_asList);
+            feat = _arrayList;
+          } else {
+            if ((feat instanceof Integer)) {
+              List<String> _asList_1 = Arrays.<String>asList(((Integer) feat).toString());
+              ArrayList<String> _arrayList_1 = new ArrayList<String>(_asList_1);
+              feat = _arrayList_1;
+            }
+          }
+        }
+        final List<String> vv = ((List<String>) feat);
+        File _xifexpression = null;
+        final Predicate<String> _function = (String it) -> {
+          return it.matches("\\d+");
+        };
+        boolean _allMatch = vv.stream().allMatch(_function);
+        if (_allMatch) {
+          File _xblockexpression_1 = null;
           {
-            final List<String[]> l = ((List<String[]>) vf);
-            final List<String> f = ((List<String>) vv);
-            final IntPredicate _function = (int i) -> {
-              return f.contains(l.get(0)[i]);
+            final Function<String, Integer> _function_1 = (String i) -> {
+              return Integer.valueOf(Integer.parseInt(i));
             };
-            _xblockexpression_1 = IterableExtensions.<Integer>toList(((Iterable<Integer>)Conversions.doWrapArray(IntStream.range(0, l.get(0).length).filter(_function).toArray())));
+            final List<Integer> il = vv.stream().<Integer>map(_function_1).toList();
+            final Function1<String[], String[]> _function_2 = (String[] sl) -> {
+              final IntPredicate _function_3 = (int i) -> {
+                return il.contains(Integer.valueOf(i));
+              };
+              final IntFunction<String> _function_4 = (int i) -> {
+                return sl[i];
+              };
+              Object[] _array = IntStream.range(0, vf.get(0).length).filter(_function_3).<String>mapToObj(_function_4).toArray();
+              return ((String[]) _array);
+            };
+            List<String[]> _map = ListExtensions.<String[], String[]>map(vf, _function_2);
+            _xblockexpression_1 = new File(_map);
           }
           _xifexpression = _xblockexpression_1;
         } else {
-          String _xblockexpression_2 = null;
-          {
-            String _stderr = c.stderr;
-            String _string = vf.toString();
-            String _plus = (_string + "\n");
-            c.stderr = (_stderr + _plus);
-            String _stderr_1 = c.stderr;
-            String _string_1 = vv.toString();
-            String _plus_1 = (_string_1 + "\n");
-            c.stderr = (_stderr_1 + _plus_1);
-            String _stderr_2 = c.stderr;
-            _xblockexpression_2 = c.stderr = (_stderr_2 + "[ERROR] SELECTING WITH NON LIST OBJECT(S)\n");
-          }
-          _xifexpression = _xblockexpression_2;
+          final Function1<String[], String[]> _function_1 = (String[] sl) -> {
+            final IntPredicate _function_2 = (int i) -> {
+              return vv.contains(vf.get(0)[i]);
+            };
+            final IntFunction<String> _function_3 = (int i) -> {
+              return sl[i];
+            };
+            Object[] _array = IntStream.range(0, vf.get(0).length).filter(_function_2).<String>mapToObj(_function_3).toArray();
+            return ((String[]) _array);
+          };
+          List<String[]> _map = ListExtensions.<String[], String[]>map(vf, _function_1);
+          _xifexpression = new File(_map);
         }
-        _xtrycatchfinallyexpression = _xifexpression;
-      } catch (final Throwable _t) {
-        if (_t instanceof ClassCastException) {
-          Object _xblockexpression_3 = null;
-          {
-            String _stderr = c.stderr;
-            String _string = vf.toString();
-            String _plus = (_string + "\n");
-            c.stderr = (_stderr + _plus);
-            String _stderr_1 = c.stderr;
-            String _string_1 = vv.toString();
-            String _plus_1 = (_string_1 + "\n");
-            c.stderr = (_stderr_1 + _plus_1);
-            String _stderr_2 = c.stderr;
-            c.stderr = (_stderr_2 + "[ERROR] SELECTING WITH NON FILE OBJECT\n");
-            _xblockexpression_3 = ASTtoInterpretation.eval(e.getFile(), c);
-          }
-          _xtrycatchfinallyexpression = _xblockexpression_3;
-        } else {
-          throw Exceptions.sneakyThrow(_t);
-        }
+        _xblockexpression = _xifexpression;
       }
-      _xblockexpression = _xtrycatchfinallyexpression;
+      _xtrycatchfinallyexpression = _xblockexpression;
+    } catch (final Throwable _t) {
+      if (_t instanceof ClassCastException) {
+        final ClassCastException exc = (ClassCastException)_t;
+        String _xblockexpression_1 = null;
+        {
+          String _stderr = c.stderr;
+          c.stderr = (_stderr + "[ERROR] SELECTING WITH WRONG OBJECT TYPES\n");
+          final StringWriter sw = new StringWriter();
+          final PrintWriter pw = new PrintWriter(sw);
+          exc.printStackTrace(pw);
+          String _stderr_1 = c.stderr;
+          String _string = sw.toString();
+          String _plus = (_string + "\n");
+          c.stderr = (_stderr_1 + _plus);
+          _xblockexpression_1 = "";
+        }
+        _xtrycatchfinallyexpression = _xblockexpression_1;
+      } else {
+        throw Exceptions.sneakyThrow(_t);
+      }
     }
-    return _xblockexpression;
+    return _xtrycatchfinallyexpression;
   }
   
   protected static Object _eval(final Unselect e, final InterpretationContext c) {
@@ -185,10 +246,22 @@ public class ASTtoInterpretation {
   protected static Object _eval(final Print e, final InterpretationContext c) {
     String _xblockexpression = null;
     {
-      Object out = ASTtoInterpretation.eval(e.getExpr(), c);
+      final Object preout = ASTtoInterpretation.eval(e.getExpr(), c);
+      String out = "";
+      if ((preout instanceof File)) {
+        for (final String[] sl : ((File) preout).content) {
+          for (final String s : sl) {
+            String _out = out;
+            out = (_out + (s + "\t"));
+          }
+        }
+      } else {
+        String _string = preout.toString();
+        String _plus = (_string + "\n");
+        out = _plus;
+      }
       String _stdout = c.stdout;
-      String _plus = (out + "\n");
-      _xblockexpression = c.stdout = (_stdout + _plus);
+      _xblockexpression = c.stdout = (_stdout + out);
     }
     return _xblockexpression;
   }
@@ -241,7 +314,15 @@ public class ASTtoInterpretation {
                     case "&":
                       _switchResult_2 = (((int) ((Integer) l).intValue()) & ((int) ((Integer) r).intValue()));
                       break;
+                    default:
+                      String _op_2 = e.getOp();
+                      String _plus = ("Unknown operator " + _op_2);
+                      throw new RuntimeException(_plus);
                   }
+                } else {
+                  String _op_2 = e.getOp();
+                  String _plus = ("Unknown operator " + _op_2);
+                  throw new RuntimeException(_plus);
                 }
                 _switchResult_1 = _switchResult_2;
               }
@@ -586,14 +667,17 @@ public class ASTtoInterpretation {
   }
   
   protected static Object _eval(final ConstVector e, final InterpretationContext c) {
-    return e.getConstVector();
+    final Function1<Expression, Object> _function = (Expression it) -> {
+      return ASTtoInterpretation.eval(it, c);
+    };
+    return ListExtensions.<Expression, Object>map(e.getConstVector(), _function);
   }
   
   protected static Object _eval(final EList<Expression> e, final InterpretationContext c) {
     InterpretationContext _xblockexpression = null;
     {
-      final Consumer<Expression> _function = (Expression x) -> {
-        ASTtoInterpretation.eval(x, c);
+      final Consumer<Expression> _function = (Expression it) -> {
+        ASTtoInterpretation.eval(it, c);
       };
       e.forEach(_function);
       _xblockexpression = c;
