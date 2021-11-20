@@ -1,0 +1,29 @@
+package fr.irisa.generator;
+
+public class TypeException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	type l, r;
+	
+	public TypeException(type l, type r) {
+		super();
+		this.l = l;
+		this.r = r;
+	}
+
+	public TypeException(type e) {
+		super();
+		this.l = l;
+		this.r = r;
+	}
+	
+	@Override
+	public String getMessage() {
+		return "Type Exception : interaction between " + l + " and " + r + " typed objects";
+	}
+	
+}

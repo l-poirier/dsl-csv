@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.DataTypeIndicator.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.NeverCalledRule.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.RuleDeclaration.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.SpecialFeature.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.TypeReference.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.UnusedValue.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.comment.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.default.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.error.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.keyword.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.number.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.punctuation.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.string.font=1|Monospace|12.0|0|GTK|1|;
+org.eclipse.xtext.Xtext.syntaxColorer.tokenStyles.task.font=1|Monospace|12.0|0|GTK|1|;

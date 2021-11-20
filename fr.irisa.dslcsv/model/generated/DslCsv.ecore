@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="dslCsv" nsURI="http://www.irisa.fr/DslCsv" nsPrefix="dslCsv">
+  <eClassifiers xsi:type="ecore:EClass" name="Program">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" upperBound="-1" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Expression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Assign" eSuperTypes="#//Expression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="var" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Nop" eSuperTypes="#//Expression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LogicalExpression" eSuperTypes="#//Expression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//CompExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="op" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//LogicalExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CompExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//ArithExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="op" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//CompExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ArithExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//SubExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="op" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//ArithExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SubExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//BaseExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="op" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//SubExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BaseExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Var" eSuperTypes="#//BaseExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="var" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstNat" eSuperTypes="#//BaseExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="constNat" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstStr" eSuperTypes="#//BaseExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="constStr" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parenthesis" eSuperTypes="#//BaseExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstVector" eSuperTypes="#//BaseExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constVector" upperBound="-1"
+        eType="#//Expression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FuncCall" eSuperTypes="#//Expression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Count" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vector" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Sort" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="file" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criterion" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Dim" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Print" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Features" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="file" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Row" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="file" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vector" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Column" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="file" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="columnName" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vector" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Product" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vector" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Sum" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vector" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Mean" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vector" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Filter" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="file" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cond" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Unselect" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="file" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="features" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Select" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="file" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="features" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Save" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="filename" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="file" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sep" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="saveHeader" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="saveID" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Acquire" eSuperTypes="#//FuncCall">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="path" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sep" eType="#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="hasHeader" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>
