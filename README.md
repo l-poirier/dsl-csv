@@ -19,7 +19,7 @@ Au delà des types simples (String et Integer), le langage manipule deux autres 
 
 ## Implémentation
 
-Le développement a été rendu difficile par le fait qu'un des membres du binôme n'a pas pu installer les environnements de développement. Ainsi, le travail a pu très difficilement être parallélisé.
+Le développement a été rendu difficile par le fait qu'un des membres du binôme n'a pas pu faire fonctionner les environnements de développement. Ainsi, le travail a pu très difficilement être parallélisé.
 
 ### Dépendances
 
