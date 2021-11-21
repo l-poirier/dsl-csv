@@ -31,12 +31,44 @@ class AssignInterpretationTest {
 		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
 		try {
 			val context = new InterpretationContext()
-			val i = (ASTtoInterpretation.eval((result as Program).expr, context)) as InterpretationContext
+			ASTtoInterpretation.eval((result as Program).expr, context)
 			Assertions.assertEquals(context.variables.get("b"), 2.0)
 			Assertions.assertEquals(context.variables.get("c"), 2.0)
 			Assertions.assertEquals(context.variables.get("a"), 2.0)
+			val wd = System.getProperty("user.dir")
+			print(wd)
 		} catch(ClassCastException exc) {
 			Assertions.fail("Wrong type in tests")
 		} 
 	}
+	
+	// Mainly used to measure the execution time
+	@Test
+	def void StressAcquireTest() {
+		// Execute several times to average-out the results
+		for(var i=0; i<10; i++) {
+			val result = parseHelper.parse('''
+				Acquire("order_products__train.csv", ",", 1)
+			''')
+			val errors = result.eResource.errors
+			Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+					ASTtoInterpretation.eval((result as Program).expr, new InterpretationContext())
+		}		
+	}
+	
+	// Mainly used to measure the execution time
+	@Test
+	def void StressAcquireSaveTest() {
+		// Execute several times to average-out the results
+		for(var i=0; i<10; i++) {
+			val result = parseHelper.parse('''
+				a=Acquire("order_products__train.csv", ",", 1);
+				Save("order_products__train_copy.csv", a, ",", 1, 1)
+			''')
+			val errors = result.eResource.errors
+			Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+					ASTtoInterpretation.eval((result as Program).expr, new InterpretationContext())
+		}		
+	}
+
 }

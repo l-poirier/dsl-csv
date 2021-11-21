@@ -54,7 +54,7 @@ Le typage faible a amené à de nombreux problèmes de typage difficilement solu
 
 * `fr.irisa.dslcsv/src/fr/irisa/` Racine du projet
     * `DslCsv.xtext` Grammaire et métamodèle du langage
-* `fr.irisa.dslcsv/src/fr/irisa/model/` Types non primitifs (en Java) utilisés pour le métamodèle (voir section [Modèle](#modele))
+* `fr.irisa.dslcsv/src/fr/irisa/model/` Types non primitifs (en Java) utilisés pour le métamodèle (voir section [Modèle](#modèle))
 * `fr.irisa.dslcsv/src/fr/irisa/generator/` Compilateurs et interpréteurs
     * `TypeException.java` Exception de type détectée à la compilation
     * `ASTtoBash.xtend` Compilateur d'AST vers Bash
@@ -63,3 +63,41 @@ Le typage faible a amené à de nombreux problèmes de typage difficilement solu
     * `DslCsvGenerator.xtend` Generator de XText (événements à l'enregistrement)
 * `fr.irisa.dslcsv/external-jars/` Dépendance externe au format JAR
 * `fr.irisa.dslcsv` Tests unitaires (et plus complets)
+
+## Benchmark
+
+Les méthodes implémentées ont été testées face à un code équivalent en Python utilisant des bibliothèques orientées machine learning (très bien optimisées pour ce genre d'opérations et très utilisées dans le domaine, ce qui permet de comparer notre implémentation face aux standards du marché).
+
+Les jeux de données utilisés sont extraits de la compétition [Instacart Market Basket Analysis](https://www.kaggle.com/c/instacart-market-basket-analysis).
+
+### Acquire
+
+Pour le programme suivant :
+
+```
+Acquire("order_products__train.csv", ",", 1)
+```
+
+En moyennant plusieurs exécutions, le cycle complet (parsing + interprétation) dure environ 600ms.
+
+Pour le programme équivalent en python ci-dessous, un cycle prend 200ms.
+
+```py
+pandas.read_csv('order_products__train.csv', sep=',')
+```
+
+### Save
+
+Pour un programme chargeant et enregistrant un fichier :
+
+```
+a=Acquire("order_products__train.csv", ",", 1);
+Save("order_products__train_copy.csv", a, ",", 1, 1)
+```
+
+Notre langage prend 1.3 secondes et le code python équivalent prend environ 2.2 secondes.
+
+![Durées d'exécution](doc/durations.svg)
+
+
+

@@ -4,6 +4,7 @@
 package fr.irisa.dslCsv.tests.interpreter;
 
 import com.google.inject.Inject;
+import fr.irisa.dslCsv.Expression;
 import fr.irisa.dslCsv.Program;
 import fr.irisa.generator.ASTtoInterpretation;
 import fr.irisa.generator.InterpretationContext;
@@ -15,6 +16,7 @@ import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -45,16 +47,71 @@ public class AssignInterpretationTest {
       Assertions.assertTrue(_isEmpty, _builder_1.toString());
       try {
         final InterpretationContext context = new InterpretationContext();
-        Object _eval = ASTtoInterpretation.eval(((Program) result).getExpr(), context);
-        final InterpretationContext i = ((InterpretationContext) _eval);
+        ASTtoInterpretation.eval(((Program) result).getExpr(), context);
         Assertions.assertEquals(context.variables.get("b"), Double.valueOf(2.0));
         Assertions.assertEquals(context.variables.get("c"), Double.valueOf(2.0));
         Assertions.assertEquals(context.variables.get("a"), Double.valueOf(2.0));
+        final String wd = System.getProperty("user.dir");
+        InputOutput.<String>print(wd);
       } catch (final Throwable _t) {
         if (_t instanceof ClassCastException) {
-          Assertions.<Object>fail("Wrong type in tests");
+          Assertions.<String>fail("Wrong type in tests");
         } else {
           throw Exceptions.sneakyThrow(_t);
+        }
+      }
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void StressAcquireTest() {
+    try {
+      for (int i = 0; (i < 10); i++) {
+        {
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("Acquire(\"order_products__train.csv\", \",\", 1)");
+          _builder.newLine();
+          final Program result = this.parseHelper.parse(_builder);
+          final EList<Resource.Diagnostic> errors = result.eResource().getErrors();
+          boolean _isEmpty = errors.isEmpty();
+          StringConcatenation _builder_1 = new StringConcatenation();
+          _builder_1.append("Unexpected errors: ");
+          String _join = IterableExtensions.join(errors, ", ");
+          _builder_1.append(_join);
+          Assertions.assertTrue(_isEmpty, _builder_1.toString());
+          EList<Expression> _expr = ((Program) result).getExpr();
+          InterpretationContext _interpretationContext = new InterpretationContext();
+          ASTtoInterpretation.eval(_expr, _interpretationContext);
+        }
+      }
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void StressAcquireSaveTest() {
+    try {
+      for (int i = 0; (i < 10); i++) {
+        {
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("a=Acquire(\"order_products__train.csv\", \",\", 1);");
+          _builder.newLine();
+          _builder.append("Save(\"order_products__train_copy.csv\", a, \",\", 1, 1)");
+          _builder.newLine();
+          final Program result = this.parseHelper.parse(_builder);
+          final EList<Resource.Diagnostic> errors = result.eResource().getErrors();
+          boolean _isEmpty = errors.isEmpty();
+          StringConcatenation _builder_1 = new StringConcatenation();
+          _builder_1.append("Unexpected errors: ");
+          String _join = IterableExtensions.join(errors, ", ");
+          _builder_1.append(_join);
+          Assertions.assertTrue(_isEmpty, _builder_1.toString());
+          EList<Expression> _expr = ((Program) result).getExpr();
+          InterpretationContext _interpretationContext = new InterpretationContext();
+          ASTtoInterpretation.eval(_expr, _interpretationContext);
         }
       }
     } catch (Throwable _e) {
