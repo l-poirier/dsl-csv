@@ -71,4 +71,20 @@ class AssignInterpretationTest {
 		}		
 	}
 
+	// Parsing diverse construction
+	@Test
+	def void ParsingTest(){
+		val result = parseHelper.parse('''
+			tab = Acquire("exemple.csv", ",", 1);
+			col = Select(tab, 1);
+			f = Filter(tab, col > (Mean(col)));
+			sum = Sum(f);
+			Save("colfiltsum.csv", Row(Select(f, 1), sum), ",", 1, 0);
+			Print(Features(tab));
+			Print("nombre total de valeurs : " + (Product(Dim(tab))) + " champs")
+		''')
+		Assertions.assertNotNull(result)
+		val errors = result.eResource.errors
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+	}
 }
