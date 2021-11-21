@@ -118,4 +118,36 @@ public class AssignInterpretationTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void ParsingTest() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("tab = Acquire(\"exemple.csv\", \",\", 1);");
+      _builder.newLine();
+      _builder.append("col = Select(tab, 1);");
+      _builder.newLine();
+      _builder.append("f = Filter(tab, col > (Mean(col)));");
+      _builder.newLine();
+      _builder.append("sum = Sum(f);");
+      _builder.newLine();
+      _builder.append("Save(\"colfiltsum.csv\", Row(Select(f, 1), sum), \",\", 1, 0);");
+      _builder.newLine();
+      _builder.append("Print(Features(tab));");
+      _builder.newLine();
+      _builder.append("Print(\"nombre total de valeurs : \" + (Product(Dim(tab))) + \" champs\")");
+      _builder.newLine();
+      final Program result = this.parseHelper.parse(_builder);
+      Assertions.assertNotNull(result);
+      final EList<Resource.Diagnostic> errors = result.eResource().getErrors();
+      boolean _isEmpty = errors.isEmpty();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("Unexpected errors: ");
+      String _join = IterableExtensions.join(errors, ", ");
+      _builder_1.append(_join);
+      Assertions.assertTrue(_isEmpty, _builder_1.toString());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }
