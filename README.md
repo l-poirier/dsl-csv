@@ -19,13 +19,15 @@ Au delà des types simples (String et Integer), le langage manipule deux autres 
 
 ## Implémentation
 
+Le développement a été rendu difficile par le fait qu'un des membres du binôme n'a pas pu installer les environnements de développement. Ainsi, le travail a pu très difficilement être parallélisé.
+
 ### Dépendances
 
 * La bibliothèque `dslcsv` (qui elle-même requiert `common-langs3`) est requise pour l'interpréteur. Ces deux bibliothèques sont fournies au format JAR dans le dossier `fr.irisa.dslcsv/external-jars`.
 
 ### Interpréteur
 
-Le typage faible a amené à de nombreux problèmes de typage difficilement solubles. Ainsi, un sous ensemble assez restreint a été implémenté.
+Le typage faible a amené à de nombreux problèmes de typage difficilement solubles, rendant les implémentations ainsi que les tests, nécessitant de nombreuses vérifications de type, laborieux et chronophages. Ainsi, un sous ensemble assez restreint a été implémenté.
 
 * Évaluation de constantes
     * Entiers
@@ -50,15 +52,14 @@ Le typage faible a amené à de nombreux problèmes de typage difficilement solu
 
 ### Fichiers écrits
 
-TODO
-
-* `fr.irisa.dslcsv/src/fr/irisa/generator/TypeException.java` Compilateurs et interpréteurs
+* `fr.irisa.dslcsv/src/fr/irisa/` Racine du projet
+    * `DslCsv.xtext` Grammaire et métamodèle du langage
+* `fr.irisa.dslcsv/src/fr/irisa/model/` Types non primitifs (en Java) utilisés pour le métamodèle (voir section [Modèle](#modele))
+* `fr.irisa.dslcsv/src/fr/irisa/generator/` Compilateurs et interpréteurs
     * `TypeException.java` Exception de type détectée à la compilation
     * `ASTtoBash.xtend` Compilateur d'AST vers Bash
     * `ASTtoInterpretation.xtend` Interpréteur
     * `ASTtoPP.xtend` Pretty-printer
     * `DslCsvGenerator.xtend` Generator de XText (événements à l'enregistrement)
-
-
-
-
+* `fr.irisa.dslcsv/external-jars/` Dépendance externe au format JAR
+* `fr.irisa.dslcsv` Tests unitaires (et plus complets)
