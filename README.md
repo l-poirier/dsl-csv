@@ -83,7 +83,11 @@ Pour mieux se retrouver dans le flot des fichiers générés automatiquement par
 
 Les méthodes implémentées ont été testées face à un code équivalent en Python utilisant des bibliothèques orientées machine learning (très bien optimisées pour ce genre d'opérations et très utilisées dans le domaine, ce qui permet de comparer notre implémentation face aux standards du marché).
 
-Les jeux de données utilisés sont extraits de la compétition [Instacart Market Basket Analysis](https://www.kaggle.com/c/instacart-market-basket-analysis).
+Le langage a été testé sur le jeu de données d'entraînement de la compétition [Instacart Market Basket Analysis](https://www.kaggle.com/c/instacart-market-basket-analysis) disponible [dans le package de test](fr.irisa.dslcsv.tests/order_products__train.csv).
+
+Les temps d'exécution ont été obtenus en exécutant le package de test directement dans eclipse (clic droit sur le package `fr.irisa.dslcsv.tests` dans le `Project Explorer` puis `Run As > JUnit Test`).
+
+Les temps d'exécution python ont été obtenus avec la bibliothèque standard `time` (cf. [le script utilisé](fr.irisa.dslcsv.tests/loadcsv.py)).
 
 ### 1) Acquire
 
