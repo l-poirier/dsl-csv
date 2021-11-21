@@ -180,6 +180,7 @@ class ASTtoInterpretation {
 
 	def static dispatch Object eval(Assign e, InterpretationContext c) {
 		c.variables.put(e.^var, eval(e.^val, c))
+		c.variables.get(e.^var)
 	}
 
 	def static dispatch Object eval(LogicalExpression e, InterpretationContext c) {

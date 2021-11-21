@@ -279,7 +279,12 @@ public class ASTtoInterpretation {
   }
   
   protected static Object _eval(final Assign e, final InterpretationContext c) {
-    return c.variables.put(e.getVar(), ASTtoInterpretation.eval(e.getVal(), c));
+    Object _xblockexpression = null;
+    {
+      c.variables.put(e.getVar(), ASTtoInterpretation.eval(e.getVal(), c));
+      _xblockexpression = c.variables.get(e.getVar());
+    }
+    return _xblockexpression;
   }
   
   protected static Object _eval(final LogicalExpression e, final InterpretationContext c) {

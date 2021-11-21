@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="ExportRepresentationsAsImagesDialog">
+		<item key="ExportRepresentationsAsImagesDialog.imageFormat" value="SVG"/>
+		<list key="ExportRepresentationsAsImagesDialog.folder">
+			<item value="/home/lugrim/eclipse-modeling-workspace/fr.irisa.dslcsv/model/generated"/>
+		</list>
 	</section>
 </section>
