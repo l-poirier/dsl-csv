@@ -1,0 +1,5 @@
+path = "./tuto.csv";
+a = Acquire(path, ",", 1);
+b = Select(a, 1);
+Print(b)
+

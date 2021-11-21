@@ -1,0 +1,8 @@
+tab = Acquire("exemple.csv", ",", 1);
+col = Select(tab, 1);
+f = Filter(tab, col > (Mean(col)));
+sum = Sum(f);
+Save("colfiltsum.csv", Row(Select(f, 1), sum), ",", 1, 0);
+Print(Features(tab));
+Print("nombre total de valeurs : " + (Product(Dim(tab))) + " champs")
+

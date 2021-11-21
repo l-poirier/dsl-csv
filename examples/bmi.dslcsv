@@ -1,0 +1,7 @@
+path = "./tuto.csv";
+a = Acquire(path, ";", 1);
+taille = Select(a, "Height");
+poids = Select(a, "Weight");
+bloc = Column(a, "BMI", poids/(taille*taille));
+Save(bloc, "bmi_1.csv", "\t", 1, 1)
+
