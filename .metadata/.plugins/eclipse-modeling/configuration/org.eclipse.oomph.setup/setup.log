@@ -1,9 +1,0 @@
-[2021-10-20 15:26:38] Executing startup tasks
-[2021-10-20 15:26:38] OpenJDK Runtime Environment 17+35
-[2021-10-20 15:26:38] Product self.product.version
-[2021-10-20 15:26:38] Workspace /home/lugrim/runtime-EclipseXtext
-[2021-10-20 15:26:38] Bundle org.eclipse.oomph.setup 1.18.0.v20200820-0414, build=4919, branch=f78238ba11ce04fb6bb89f0cb98f4dd759377d1d
-[2021-10-20 15:26:38] Bundle org.eclipse.oomph.setup.core 1.18.0.v20200624-1156, build=4919, branch=f78238ba11ce04fb6bb89f0cb98f4dd759377d1d
-[2021-10-20 15:26:38] Bundle org.eclipse.oomph.setup.p2 1.16.0.v20200814-1205, build=4919, branch=f78238ba11ce04fb6bb89f0cb98f4dd759377d1d
-[2021-10-20 15:26:38] Performing Preference /instance/org.eclipse.jdt.ui/spelling_user_dictionary_encoding = 
-[2021-10-20 15:26:38] 

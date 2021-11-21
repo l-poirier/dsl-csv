@@ -99,5 +99,6 @@ Notre langage prend 1.3 secondes et le code python équivalent prend environ 2.2
 
 ![Durées d'exécution](doc/durations.svg)
 
+La différence de temps d'exécution peut s'expliquer par la différence de philosophie du langage. Les données sont stockées au format textuel dans notre langage, contrairement à pandas qui interprète les nombres. En effet, ce dernier est conçu pour des traitements assez simples avant une utilisation externe (par exemple, dans un langage de machine learning). Ainsi, le chargement est plus lent et la mémoire utilisée plus importante, mais une conversion des nombres vers un format texte vers n'est pas requise pour l'enregistrement.
 
 
