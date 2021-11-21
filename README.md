@@ -23,7 +23,7 @@ Au delà des types simples (String et Integer), le langage manipule deux autres 
 
 Le langage a été implémenté dans l'environnement Eclipse Modeling Framework avec XText et XTend (plus précisément, un pretty-printer ainsi que des ébauches d'interpréteur et de compilateur en bash).
 
-Le développement a été rendu difficile par le fait qu'un des membres du binôme n'a pas pu installer les environnements de développement. Ainsi, le travail a pu très difficilement être parallélisé et rendait pour ce dernier les tests très difficiles.
+Le développement a été rendu difficile par le fait qu'un des membres du binôme n'a pas pu faire fonctionner les environnements de développement. Ainsi, le travail a pu très difficilement être parallélisé et rendait pour ce dernier les tests très difficiles.
 
 ### 1) Dépendances
 
